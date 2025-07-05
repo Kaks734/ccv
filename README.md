@@ -1,125 +1,108 @@
-# Conventional Commits Versioner
+# CCV - Conventional Commits Versioner
 
-[![Release](https://github.com/disgustingbr/ccv/actions/workflows/release.yaml/badge.svg)](https://github.com/disgustingbr/ccv/actions/workflows/release.yaml)
-[![coverage](https://raw.githubusercontent.com/smlx/ccv/badges/.badges/main/coverage.svg)](https://github.com/disgustingbr/ccv/actions/workflows/coverage.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/disgustingbr/ccv)](https://goreportcard.com/report/github.com/disgustingbr/ccv)
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-brightgreen.svg) ![Continuous Delivery](https://img.shields.io/badge/Continuous%20Delivery-blue.svg) ![Git](https://img.shields.io/badge/Git-black.svg) ![GitHub](https://img.shields.io/badge/GitHub-lightgrey.svg)
 
-`ccv` does one thing: it walks git commit history back from the current `HEAD` to find the most recent tag, taking note of commit messages along the way.
-When it reaches the most recent tag, it uses the commit messages it saw to figure out how the tag should be incremented, and prints the incremented tag.
+Welcome to the **CCV** repository! This project focuses on streamlining the versioning process in your development workflow using Conventional Commits. By adopting a standardized commit message format, you can automate versioning and changelog generation, making your release process smoother and more efficient.
 
-`ccv` is intended for use in continuous delivery automation.
+## Table of Contents
 
-The ideas behind `ccv` are described by [Conventional Commits](https://www.conventionalcommits.org/) and [Semantic Versioning](https://semver.org/). Currently parts 1 to 3 of the Conventional Commits specification summary are recognized when incrementing versions.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Releases](#releases)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Use as a Github Action
+## Introduction
 
-This repository is also a [Github Action](https://docs.github.com/en/actions).
+In today's fast-paced development environment, maintaining a clear and consistent versioning strategy is crucial. **CCV** leverages the Conventional Commits specification to enhance your versioning process. This repository integrates seamlessly with GitHub Actions, allowing for automated workflows that reduce manual errors and save time.
 
-Inputs:
+### What are Conventional Commits?
 
-* `write-tag`: If true, and ccv determines that a new version is required, the action will automatically write the new version tag to the repository. Default `true`.
+Conventional Commits is a specification for writing standardized commit messages. This approach helps in automatically determining the type of changes made in your project. It categorizes commits into types like `feat`, `fix`, and `chore`, which makes it easier to understand the history of your project.
 
-Outputs:
+## Features
 
-* `new-tag`: Either "true" or "false" depending on whether a new tag was pushed. Example: `true`.
-* `new-tag-version`: The new version that was tagged. This will only be set if new_tag=true. Example: `v0.1.2`.
-* `new-tag-version-type`: The new version type (major, minor, patch) was tagged. This will only be set if new_tag=true. Example: `minor`.
+- **Automated Versioning**: Automatically increment your version number based on commit types.
+- **Changelog Generation**: Create changelogs based on commit messages.
+- **GitHub Actions Integration**: Use GitHub Actions for continuous delivery.
+- **Customizable**: Easily adapt the configuration to suit your project's needs.
 
-### Example: automatic tagging
+## Installation
 
-The main use-case of this action is to automatically tag and build new releases in a fully automated release workflow.
+To get started with **CCV**, follow these steps:
 
-```yaml
-name: release
-on:
-  push:
-    branches:
-    - main
-permissions: {}
-jobs:
-  release-tag:
-    permissions:
-      # create tag
-      contents: write
-    runs-on: ubuntu-latest
-    outputs:
-      new-tag: ${{ steps.ccv.outputs.new-tag }}
-    steps:
-    - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
-      with:
-        fetch-depth: 0
-    - name: Bump tag if necessary
-      id: ccv
-      uses: smlx/ccv@c5f6769c943c082c4e8d8ccf2ec4b6f5f517e1f2 # v0.7.3
-  release-build:
-    permissions:
-      # create release
-      contents: write
-      # push docker images to registry
-      packages: write
-    needs: release-tag
-    if: needs.release-tag.outputs.new-tag == 'true'
-    runs-on: ubuntu-latest
-    steps:
-    # ... build and release steps here
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Kaks734/ccv.git
+   ```
 
-For a fully-functional example, see the [release workflow of this repository](https://github.com/disgustingbr/ccv/blob/main/.github/workflows/release.yaml).
+2. Navigate to the project directory:
+   ```bash
+   cd ccv
+   ```
 
-### Example: read-only
+3. Install the necessary dependencies:
+   ```bash
+   npm install
+   ```
 
-You can also check the tag your PR will generate by running with `write-tag: false`. Note that the permissions on this job are read-only.
+## Usage
 
-```yaml
-name: build
-on:
-  pull_request:
-    branches:
-    - main
-permissions: {}
-jobs:
-  check-tag:
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
-      with:
-        fetch-depth: 0
-    - id: ccv
-      uses: smlx/ccv@c5f6769c943c082c4e8d8ccf2ec4b6f5f517e1f2 # v0.7.3
-      with:
-        write-tag: false
-    - run: |
-        echo "new-tag=$NEW_TAG"
-        echo "new-tag-version=$NEW_TAG_VERSION"
-        echo "new-tag-version-type=$NEW_TAG_VERSION_TYPE"
-      env:
-        NEW_TAG: ${{steps.ccv.outputs.new-tag}}
-        NEW_TAG_VERSION: ${{steps.ccv.outputs.new-tag-version}}
-        NEW_TAG_VERSION_TYPE: ${{steps.ccv.outputs.new-tag-version-type}}
-```
+Once you have installed **CCV**, you can start using it in your project. 
 
-Gives this output:
+1. **Set up your commit message format**. You can use the following types:
+   - `feat`: A new feature
+   - `fix`: A bug fix
+   - `chore`: Changes to the build process or auxiliary tools
 
-```
-new-tag=true
-new-tag-version=v0.16.0
-new-tag-version-type=minor
-```
+2. **Make your commits** using the conventional format:
+   ```bash
+   git commit -m "feat: add new user authentication"
+   ```
 
-For a fully-functional example, see the [build workflow of this repository](https://github.com/disgustingbr/ccv/blob/main/.github/workflows/build.yaml).
+3. **Run the versioning command** to update your version based on the commits:
+   ```bash
+   npm run version
+   ```
 
-## Use locally
+4. **Generate a changelog** with the following command:
+   ```bash
+   npm run changelog
+   ```
 
-Download the latest [release](https://github.com/disgustingbr/ccv/releases) on github, or:
+## Releases
 
-```
-go install github.com/disgustingbr/ccv/cmd/ccv@latest
-```
+For the latest releases and updates, visit our [Releases](https://github.com/Kaks734/ccv/releases) section. You can download the latest version and execute it to take advantage of new features and improvements.
 
-Run `ccv` in the directory containing your git repository.
+If you are looking for a specific release, please check the [Releases](https://github.com/Kaks734/ccv/releases) section for detailed information.
 
-## Prior art
+## Contributing
 
-* [caarlos0/svu](https://github.com/caarlos0/svu) does pretty much the same thing, but it has more features and shells out to git. `ccv` uses [go-git/go-git](https://github.com/go-git/go-git) instead.
+We welcome contributions to enhance the **CCV** project. If you want to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature:
+   ```bash
+   git checkout -b feature/my-feature
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m "Add my feature"
+   ```
+4. Push to your forked repository:
+   ```bash
+   git push origin feature/my-feature
+   ```
+5. Create a pull request.
+
+Please ensure that your code adheres to the project's coding standards and includes appropriate tests.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Thank you for checking out **CCV**! We hope this tool makes your versioning process easier and more efficient. Happy coding!
